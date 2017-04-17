@@ -1,0 +1,1 @@
+export { NgrxReduxMiddlewareModule } from './applyMiddleware';
