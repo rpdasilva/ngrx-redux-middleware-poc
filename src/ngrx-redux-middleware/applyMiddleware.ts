@@ -1,5 +1,5 @@
 import { Inject, NgModule, OpaqueToken } from '@angular/core';
-import { Store, Dispatcher } from '@ngrx/store'
+import { Store, Dispatcher } from '@ngrx/store';
 import 'rxjs/add/operator/take';
 
 import { compose } from './compose'
@@ -7,7 +7,19 @@ import { compose } from './compose'
 export const APPLY_MIDDLEWARE = new OpaqueToken('@@ngrx-redux-middleware/applyMiddleware');
 export const MIDDLEWARES = new OpaqueToken('@@ngrx-redux-middleware/middlewares');
 
+// export function middlewareHelper (middleware) {
+//   const base = typeof middleware === 'function' ?
+//     { useValue: middleware } :
+//     { useExisting: middleware };
+
+//   return Object.assign({}, base, {
+//     provide: MIDDLEWARES,
+//     multi: true
+//   });
+// }
+
 export function applyMiddlewareFactory(store: Store<any>, middlewares: any[]) {
+  // debugger;
   const middlewareAPI = {
     dispatch: store.dispatch.bind(store),
     getState: () => {
@@ -32,10 +44,10 @@ export class NgrxReduxMiddlewareModule {
   static applyMiddleware (middlewares: any[] = []) {
     return {
       ngModule: NgrxReduxMiddlewareModule,
-      providers: [{
-        provide: MIDDLEWARES,
-        useValue: middlewares
-      }]
+      providers: [
+        { provide: MIDDLEWARES, useValue: middlewares }
+        // middlewares.map(middlewareHelper)
+      ]
     };
   }
 

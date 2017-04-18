@@ -3,9 +3,12 @@ import { NgModule, Injectable } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { StoreModule, Dispatcher } from '@ngrx/store';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 
 import { AppComponent } from './app.component';
+import { FooEpics } from '../epics/foo.epics';
 import { NgrxReduxMiddlewareModule } from '../ngrx-redux-middleware';
 
 // export class DispatcherOverload extends Dispatcher {
@@ -23,6 +26,20 @@ export function fooReducer (state, action) {
       return foo;
     }
 
+    case 'LEET': {
+      const { leet } = action.payload;
+      return leet;
+    }
+
+    case 'LEET_ERROR': {
+      const { error } = action.payload;
+      return error;
+    }
+
+    case 'PONG': {
+      return 'pong';
+    }
+
     default: {
       return state;
     }
@@ -38,9 +55,9 @@ export function fooReducer (state, action) {
     FormsModule,
     HttpModule,
     StoreModule.provideStore({ foo: fooReducer }, { foo: true }),
-    NgrxReduxMiddlewareModule.applyMiddleware([createLogger()])
+    NgrxReduxMiddlewareModule.applyMiddleware([thunk, createLogger()])
   ],
-  providers: [],
+  providers: [FooEpics],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
