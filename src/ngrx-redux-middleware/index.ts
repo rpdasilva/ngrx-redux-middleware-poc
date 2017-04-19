@@ -1,1 +1,1 @@
-export { NgrxReduxMiddlewareModule } from './applyMiddleware';
+export * from './module';

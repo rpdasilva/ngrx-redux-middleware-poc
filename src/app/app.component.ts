@@ -24,9 +24,9 @@ export class AppComponent {
       (this.store as any).dispatch(this.asyncAction());
     }, 1000);
 
-    setTimeout(() => {
-      this.store.dispatch({ type: 'PING' });
-    }, 2000);
+    // setTimeout(() => {
+    //   this.store.dispatch({ type: 'PING' });
+    // }, 2000);
   }
 
   asyncAction() {
