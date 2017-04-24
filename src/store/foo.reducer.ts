@@ -5,12 +5,12 @@ export function fooReducer (state, action) {
       return foo;
     }
 
-    case 'LEET': {
+    case 'THUNK': {
       const { leet } = action.payload;
       return leet;
     }
 
-    case 'LEET_ERROR': {
+    case 'THUNK_ERROR': {
       const { error } = action.payload;
       return error;
     }

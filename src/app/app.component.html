@@ -1,3 +1,23 @@
 <h1>
   {{foo | async}}
 </h1>
+
+<h2>Pokemon</h2>
+<div class="w-100" style="max-width: 400px">
+  <div *ngIf="loading">
+    Loading
+  </div>
+  <div *ngIf="!loading">
+    <div>
+      Hey {{trainer.name}}, you have {{ownedPokemon.length}} pokemons in your pokedex
+    </div>
+    <div class="pa3 bg-black-05 ma3" *ngFor="let pokemon of ownedPokemons">
+      <div class="dim grow">
+        <img src="{{pokemon.url}}" style="width:100%">
+      </div>
+      <div class="pt3">
+        {{pokemon.name}}
+      </div>
+    </div>
+  </div>
+</div>

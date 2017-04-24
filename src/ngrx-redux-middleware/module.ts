@@ -11,26 +11,31 @@ export const ENHANCER = new OpaqueToken('@@ngrx-redux-middleware/enhancer');
 type RetypedCompose = (...funcs: Function[]) => Function;
 const compose = _compose as RetypedCompose;
 
-export function mutateStore (store) {
-  return Object.assign(store, {
+export function shimStore (store) {
+  return Object.assign({}, store, {
     dispatch: store.dispatch.bind(store),
+    // TODO: Why does this cause an infinite loop?
+    // dispatch: (...args) => store.dispatch(...args),
     getState: () => {
       let state;
-      store.take(1).subscribe(s => state = s);
+      store.source.take(1).subscribe(s => state = s);
       return state;
-    }
+    },
+    subscribe: (...args) => store.source.subscribe(...args)
   });
 }
 
 export function createStoreFactory (store: Store<any>, enhancer) {
-  const reducer = () => {};
-  const preloadedState = {};
+  const reducer = store['_reducer'].value;
+  const preloadedState = store['source']['value'];
   const enhancedStore = createStore(store)(reducer, preloadedState, enhancer);
   Object.assign(store, enhancedStore);
 }
 
 // TODO: Determine if composeWithDevTools can be supported
 export function createStore (store) {
+  const shimmedStore = shimStore(store);
+
   return function (reducer, preloadedState, enhancer?) {
     if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
       enhancer = preloadedState;
@@ -45,19 +50,18 @@ export function createStore (store) {
       return enhancer(createStore(store))(reducer, preloadedState);
     }
 
-    return mutateStore(store);
+    return shimmedStore;
   }
 }
 
 // TODO: Figure out why thunk actions aren't logged
 // (enhanceStore behaves as expected)
 export function applyMiddlewareFactory(store: Store<any>, middlewares: any[]) {
-  // debugger;
-  const middlewareAPI = mutateStore(store);
-  const chain = middlewares.map(middleware => middleware(middlewareAPI));
+  const shimmedStore = shimStore(store);
+  const chain = middlewares.map(middleware => middleware(shimmedStore));
 
-  Object.assign(store, {
-    dispatch: compose(...chain)(store.dispatch)
+  Object.assign(store, shimmedStore, {
+    dispatch: compose(...chain)(shimmedStore.dispatch)
   });
 }
 
