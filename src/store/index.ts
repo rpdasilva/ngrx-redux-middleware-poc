@@ -10,7 +10,9 @@ export const INIIAL_STATE = {
   apollo: {}
 };
 
-export const rootReducer = combineReducers({
-  foo: fooReducer,
-  apollo: apolloClient.reducer()
-});
+export function rootReducer (state: any, action: any) {
+  return combineReducers({
+    foo: fooReducer,
+    apollo: apolloClient.reducer()
+  })(state, action);
+}

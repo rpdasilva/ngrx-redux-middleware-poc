@@ -40,6 +40,7 @@ export class AppComponent {
     this.foo = this.store.select('foo');
 
     this.store.dispatch({ type: 'CHANGE_FOO', payload: { foo: 'bar' } });
+    console.log(this.store);
 
     setTimeout(() => {
       (this.store as any).dispatch(this.asyncAction());

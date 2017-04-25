@@ -1,4 +1,5 @@
 import { Action, Store } from '@ngrx/store';
+import 'rxjs/add/operator/take';
 
 export type State = any;
 export type Dispatch = (a: Action) => any

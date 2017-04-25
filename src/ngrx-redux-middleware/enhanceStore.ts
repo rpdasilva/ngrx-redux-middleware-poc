@@ -12,7 +12,7 @@ import {
 export function enhanceStore (store: Store<State>) {
   const shimmedStore = shimStore(store);
 
-  return function (reducer, preloadedState, enhancer?) {
+  return function (reducer, preloadedState?, enhancer?) {
     if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
       enhancer = preloadedState;
       preloadedState = undefined;
