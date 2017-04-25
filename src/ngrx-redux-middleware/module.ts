@@ -47,7 +47,7 @@ export function createStore (store) {
         throw new Error('Expected the enhancer to be a function.');
       }
 
-      return enhancer(createStore(store))(reducer, preloadedState);
+      return enhancer(createStore(shimmedStore))(reducer, preloadedState);
     }
 
     return shimmedStore;
