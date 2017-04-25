@@ -15,7 +15,7 @@ export function fooReducer (state, action) {
       return error;
     }
 
-    case 'PONG': {
+    case 'EPIC_PONG': {
       return 'pong';
     }
 
