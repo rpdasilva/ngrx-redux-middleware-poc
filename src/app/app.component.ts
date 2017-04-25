@@ -45,9 +45,9 @@ export class AppComponent {
       (this.store as any).dispatch(this.asyncAction());
     }, 1000);
 
-    // setTimeout(() => {
-    //   this.store.dispatch({ type: 'PING' });
-    // }, 2000);
+    setTimeout(() => {
+      this.store.dispatch({ type: 'EPIC_PING' });
+    }, 2000);
 
     this.trainer = this.apollo
       .watchQuery<any>({ query: TrainerQuery })
