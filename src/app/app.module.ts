@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { applyMiddleware } from 'redux';
-// import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { createEpics } from 'redux-observable-decorator';
@@ -36,6 +36,7 @@ const middleware = [
     StoreModule.provideStore(rootReducer, INIIAL_STATE),
     // NgrxReduxMiddlewareModule,
     NgrxReduxMiddlewareModule.enhanceStore(
+      // composeWithDevTools(applyMiddleware(...middleware))
       applyMiddleware(...middleware)
     ),
     StoreDevtoolsModule.instrumentOnlyWithExtension({})

@@ -1,4 +1,5 @@
 import { Action, Store } from '@ngrx/store';
+import $$observable from 'symbol-observable';
 import 'rxjs/add/operator/take';
 
 export type State = any;
@@ -28,7 +29,11 @@ export function shimStore (store: any): Store<State> {
       store.source.take(1).subscribe(s => state = s);
       return state;
     },
-    subscribe: (...args) => store.source.subscribe(...args)
+    replaceReducer: store.replaceReducer.bind(store),
+    // TODO: Why does this cause an infinite loop?
+    // replaceReducer: (...args) => store.replaceReducer(...args),
+    subscribe: (...args) => store.source.subscribe(...args),
+    [$$observable]: () => store.source
   });
 }
 
